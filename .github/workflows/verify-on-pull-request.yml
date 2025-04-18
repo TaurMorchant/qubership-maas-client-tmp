@@ -10,7 +10,13 @@ jobs:
   mvn:
     uses: netcracker/qubership-workflow-hub/.github/workflows/maven-publish.yml@main
     with:
-      maven-command: "--batch-mode verify -Dgpg.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar -Dsonar.projectKey=TaurMorchant_qubership-maas-client-tmp -Dsonar.organization=vladislav-larkin-test-organization"
+      maven-command: "--batch-mode verify -Dgpg.skip=true \
+        org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar \
+        -Dsonar.projectKey=TaurMorchant_qubership-maas-client-tmp \
+        -Dsonar.organization=vladislav-larkin-test-organization \
+        -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} \
+        -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+        -Dsonar.pullrequest.base=${{ github.base_ref }}"
       server-id: github
       java-version: 17
     secrets:
