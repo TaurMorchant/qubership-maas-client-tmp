@@ -1,17 +1,36 @@
 name: Build on Commit
 
 on:
-  push:
-    branches:
-      - main
+  - push
 
 jobs:
   mvn:
-    uses: netcracker/qubership-workflow-hub/.github/workflows/maven-publish.yml@main
-    with:
-      maven-command: "--batch-mode install -Dgpg.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar -Dsonar.projectKey=TaurMorchant_qubership-maas-client-tmp -Dsonar.organization=vladislav-larkin-test-organization"
-      server-id: github
-      java-version: 17
-    secrets:
-      maven-token: ${{ secrets.GITHUB_TOKEN }}
-      sonar-token: ${{ secrets.SONAR_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref}}
+          fetch-depth: 0
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Display settings.xml
+        run: cat ~/.m2/settings.xml
+
+      - name: Sign and Deploy jar to Maven Central
+        run: mvn --batch-mode install -Dgpg.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar -Dsonar.projectKey=TaurMorchant_qubership-maas-client-tmp -Dsonar.organization=vladislav-larkin-test-organization
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
