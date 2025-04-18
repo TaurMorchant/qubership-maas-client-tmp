@@ -12,6 +12,7 @@ jobs:
       maven-command: "--batch-mode install -Dgpg.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar -Dsonar.projectKey=TaurMorchant_qubership-maas-client-tmp -Dsonar.organization=vladislav-larkin-test-organization"
       server-id: github
       java-version: 17
+      ref: ${{ github.head_ref }}
     secrets:
       maven-token: ${{ secrets.GITHUB_TOKEN }}
       sonar-token: ${{ secrets.SONAR_TOKEN }}

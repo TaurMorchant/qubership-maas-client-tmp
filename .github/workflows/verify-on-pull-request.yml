@@ -19,6 +19,7 @@ jobs:
         -Dsonar.pullrequest.base=${{ github.base_ref }}"
       server-id: github
       java-version: 17
+      ref: ${{ github.head_ref }}
     secrets:
       maven-token: ${{ secrets.GITHUB_TOKEN }}
       sonar-token: ${{ secrets.SONAR_TOKEN }}
