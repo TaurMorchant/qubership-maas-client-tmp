@@ -1,7 +1,9 @@
 name: Build on Commit
 
 on:
-  - push
+  push:
+    branches:
+      - main
 
 jobs:
   mvn:

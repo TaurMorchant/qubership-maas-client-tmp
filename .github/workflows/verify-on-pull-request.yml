@@ -3,6 +3,8 @@ name: Verify on pull requests
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
+    branches:
+      - main
 
 jobs:
   mvn:
