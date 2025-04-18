@@ -11,11 +11,13 @@ public abstract class DynamicQueueBindingsManagerAbstract implements DynamicQueu
     private final BlueGreenStatePublisher statePublisher;
 
     protected DynamicQueueBindingsManagerAbstract(BlueGreenStatePublisher statePublisher) {
+        log.debug("TMP");
         this.statePublisher = statePublisher;
     }
 
     @Override
     public void queueBindDynamic(ChannelSupplier channelSupplier, String queue, String exchange, String routingKey, Map<String, Object> arguments) {
+        log.debug("TMP");
         String versionedExchange = getVersionedExchangeName(exchange);
         log.info("Binding dynamic queue with versioned exchange: {}", versionedExchange);
 
@@ -28,15 +30,18 @@ public abstract class DynamicQueueBindingsManagerAbstract implements DynamicQueu
 
     @Override
     public void queueUnbindDynamic(ChannelSupplier channelSupplier, String queue, String exchange, String routingKey, Map<String, Object> arguments) {
+        log.debug("TMP");
         String versionedExchange = getVersionedExchangeName(exchange);
         removeBinding(channelSupplier, queue, versionedExchange, routingKey, arguments);
     }
 
     private String getVersionedExchangeName(String exchangeName) {
+        log.debug("TMP");
         return getVersionedExchangeName(exchangeName, statePublisher.getBlueGreenState().getCurrent().getVersion());
     }
 
     private String getVersionedExchangeName(String exchangeName, Version version) {
+        log.debug("TMP");
         return exchangeName + "-" + version.value();
     }
 }
